@@ -35,30 +35,28 @@ Adafruit_NeoPixel pixels(1, PIN_NEOPIXEL, NEO_GRB + NEO_KHZ800);
 #include <Adafruit_MotorShield.h>
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 // Select which 'port' M1, M2, M3 or M4. In this case, M1
-Adafruit_DCMotor *motorLeft = AFMS.getMotor(2);
-Adafruit_DCMotor *motorRight = AFMS.getMotor(3);
+Adafruit_DCMotor *motorBackLeft = AFMS.getMotor(1);
+Adafruit_DCMotor *motorBackRight = AFMS.getMotor(2);
+Adafruit_DCMotor *motorFrontLeft = AFMS.getMotor(3);
+Adafruit_DCMotor *motorFrontRight = AFMS.getMotor(4);
 
-void initialiseTemperatureMotionWing() {
-  if (!tempsensor.begin()) {
-    if (DEBUG) {
-      Serial.println("Couldn't find ADT7410!");
-    }
-    while (1)
-      ;
-  }
+void testNewMotors() {
+  
 }
+
 
 void initialiseSerial() {
   Serial.begin(9600);
   while (!Serial) delay(1);
   delay(100);
   Serial.println("Feather LoRa TX Test!");
-}
+} 
+// M4 = Grey + Black
+// M3 = Grey + Red
+// M1 = Brown + Orange
+// M2 = Blue + Orange
 
-void initialiseBuzzer() {
 
-  pinMode(buzzer, OUTPUT);  // Set buzzer - pin 9 as an output
-}
 
 void initialiseMotorShield() {
   if (!AFMS.begin()) {  // create with the default frequency 1.6KHz
@@ -75,30 +73,6 @@ void initialiseMotorShield() {
 }
 
 
-void transmitTemperature() {
-  float c = tempsensor.readTempC();
-  float f = c * 9.0 / 5.0 + 32;
-  if (DEBUG) {
-    Serial.print("Temp: ");
-    Serial.print(c);
-    Serial.print("*C\t");
-    Serial.print(f);
-    Serial.println("*F");
-  }
-  const char *roverID = "1";
-  char packetBuffer[20];  // Buffer to hold the final packet
-  const char *packetToTx;
-
-
-  // Format the string into packetBuffer
-  snprintf(packetBuffer, sizeof(packetBuffer), "%s,%.1f", roverID, c);
-
-  // Assign the formatted string to packetToTx
-  packetToTx = packetBuffer;
-
-
-  transmitData(packetToTx, ROVER_ID);  // UPDATED CALL
-}
 
 void commandTest() {
   if (DEBUG) {
@@ -121,63 +95,63 @@ void commandTest() {
 
 
 void commandForward() {
-  motorLeft->setSpeed(150);
-  motorRight->setSpeed(150);
+  motorFrontLeft->setSpeed(150);
+  motorFrontRight->setSpeed(150);
 
-  motorLeft->run(FORWARD);
-  motorRight->run(FORWARD);
+  motorFrontLeft->run(FORWARD);
+  motorFrontRight->run(FORWARD);
   delay(100);  // Runs the motors for 1 second
 
   // Stops the motors
-  motorLeft->run(RELEASE);
-  motorRight->run(RELEASE);
+  motorFrontLeft->run(RELEASE);
+  motorFrontRight->run(RELEASE);
 }
 
 void commandBackward() {
-  motorLeft->setSpeed(150);
-  motorRight->setSpeed(150);
+  motorFrontLeft->setSpeed(150);
+  motorFrontRight->setSpeed(150);
 
-  motorLeft->run(BACKWARD);
-  motorRight->run(BACKWARD);
+  motorFrontLeft->run(BACKWARD);
+  motorFrontRight->run(BACKWARD);
   delay(100);  // Runs the motors for 1 second
 
   // Stops the motors
-  motorLeft->run(RELEASE);
-  motorRight->run(RELEASE);
+  motorFrontLeft->run(RELEASE);
+  motorFrontRight->run(RELEASE);
 }
 
 
 void commandRight() {
-  motorLeft->setSpeed(150);
-  motorRight->setSpeed(150);
+  motorFrontLeft->setSpeed(150);
+  motorFrontRight->setSpeed(150);
 
-  motorLeft->run(FORWARD);
-  motorRight->run(BACKWARD);
+  motorFrontLeft->run(FORWARD);
+  motorFrontRight->run(BACKWARD);
   delay(100);  // Runs the motors for 1 second
 
   // Stops the motors
-  motorLeft->run(RELEASE);
-  motorRight->run(RELEASE);
+  motorFrontLeft->run(RELEASE);
+  motorFrontRight->run(RELEASE);
 }
 
 
 void commandLeft() {
-  motorLeft->setSpeed(150);
-  motorRight->setSpeed(150);
+  motorFrontLeft->setSpeed(150);
+  motorFrontRight->setSpeed(150);
 
-  motorLeft->run(BACKWARD);
-  motorRight->run(FORWARD);
+  motorFrontLeft->run(BACKWARD);
+  motorFrontRight->run(FORWARD);
   delay(100);  // Runs the motors for 1 second
 
   // Stops the motors
-  motorLeft->run(RELEASE);
-  motorRight->run(RELEASE);
+  motorFrontLeft->run(RELEASE);
+  motorFrontRight->run(RELEASE);
 }
 
 void commandStop() {
   // Stops the motors
-  motorLeft->run(RELEASE);
-  motorRight->run(RELEASE);
+  motorFrontLeft->run(RELEASE);
+  motorFrontRight->run(RELEASE);
 }
 
 void commandStart() {
@@ -202,7 +176,6 @@ void setup() {
   setRadioFrequency();
   setRadioPower();
   initialiseMotorShield();
-  initialiseBuzzer();
 
   pinMode(LED_BUILTIN, OUTPUT);
 
@@ -256,6 +229,5 @@ void loop() {
     commandBackward();
   }
 
-  // transmitTemperature();
-  delay(10);
+  delay(100);
 }
