@@ -35,15 +35,36 @@ Adafruit_NeoPixel pixels(1, PIN_NEOPIXEL, NEO_GRB + NEO_KHZ800);
 #include <Adafruit_MotorShield.h>
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 // Select which 'port' M1, M2, M3 or M4. In this case, M1
-Adafruit_DCMotor *motorBackLeft = AFMS.getMotor(1);
-Adafruit_DCMotor *motorBackRight = AFMS.getMotor(2);
-Adafruit_DCMotor *motorFrontLeft = AFMS.getMotor(3);
-Adafruit_DCMotor *motorFrontRight = AFMS.getMotor(4);
+// Adafruit_DCMotor *motorBackLeft = AFMS.getMotor(1);
+// Adafruit_DCMotor *motorBackRight = AFMS.getMotor(2);
+// Adafruit_DCMotor *motorFrontLeft = AFMS.getMotor(3);
+// Adafruit_DCMotor *motorFrontRight = AFMS.getMotor(4);
+
+Adafruit_DCMotor *motorFrontLeft = AFMS.getMotor(1);
+Adafruit_DCMotor *motorFrontRight = AFMS.getMotor(2);
+Adafruit_DCMotor *motorBackLeft = AFMS.getMotor(3);
+Adafruit_DCMotor *motorBackRight = AFMS.getMotor(4);
 
 void testNewMotors() {
-  
+  motorFrontLeft->setSpeed(150);
+  motorFrontRight->setSpeed(150);
+  motorBackLeft->setSpeed(150);
+  motorBackRight->setSpeed(150);
+
+  motorFrontLeft->run(FORWARD);
+  motorFrontRight->run(FORWARD);
+  motorBackLeft->run(FORWARD);
+  motorBackRight->run(FORWARD);
+  delay(1000);
+  Serial.println("Forward, forward.");
 }
 
+void testBackLeftOnly() {
+  motorFrontRight->setSpeed(150);
+  motorFrontRight->run(FORWARD);
+  Serial.println("Working!");
+  delay(2000);
+}
 
 void initialiseSerial() {
   Serial.begin(9600);
@@ -51,14 +72,17 @@ void initialiseSerial() {
   delay(100);
   Serial.println("Feather LoRa TX Test!");
 } 
-// M4 = Grey + Black
-// M3 = Grey + Red
 // M1 = Brown + Orange
 // M2 = Blue + Orange
+// M3 = Grey + Red
+// M4 = Grey + Black
+
+
 
 
 
 void initialiseMotorShield() {
+  delay(500);
   if (!AFMS.begin()) {  // create with the default frequency 1.6KHz
     // if (!AFMS.begin(1000)) {  // OR with a different frequency, say 1KHz
     if (DEBUG) {
@@ -188,46 +212,48 @@ void setup() {
 
 
 void loop() {
+  testNewMotors();
+  //testBackLeftOnly();
   // readGPS();
   // transmitData("test");
-  String command = waitForReply();
-  if (DEBUG) {
-    Serial.println(command);
-  }
+  //String command = waitForReply();
+  //if (DEBUG) {
+    //Serial.println(command);
+  //}
 
-  String test_command = String(ROVER_ID) + ",test";
-  String forward_command = String(ROVER_ID) + ",forward";
-  String right_command = String(ROVER_ID) + ",right";
-  String start_command = String(ROVER_ID) + ",start";
-  String left_command = String(ROVER_ID) + ",left";
-  String stop_command = String(ROVER_ID) + ",stop";
-  String beep_command = String(ROVER_ID) + ",beep";
-  String backward_command = String(ROVER_ID) + ",backward";
+  // String test_command = String(ROVER_ID) + ",test";
+  // String forward_command = String(ROVER_ID) + ",forward";
+  // String right_command = String(ROVER_ID) + ",right";
+  // String start_command = String(ROVER_ID) + ",start";
+  // String left_command = String(ROVER_ID) + ",left";
+  // String stop_command = String(ROVER_ID) + ",stop";
+  // String beep_command = String(ROVER_ID) + ",beep";
+  // String backward_command = String(ROVER_ID) + ",backward";
 
-  if (command == test_command) {  // UPDATED TO USE ROVER_ID
-    commandTest();
-  }
-  if (command == forward_command) {  // UPDATED TO USE ROVER_ID
-    commandForward();
-  }
-  if (command == right_command) {  // UPDATED TO USE ROVER_ID
-    commandRight();
-  }
-  if (command == start_command) {  // UPDATED TO USE ROVER_ID
-    commandStart();
-  }
-  if (command == left_command) {  // UPDATED TO USE ROVER_ID
-    commandLeft();
-  }
-  if (command == stop_command) {  // UPDATED TO USE ROVER_ID
-    commandStop();
-  }
-  if (command == beep_command) {  // UPDATED TO USE ROVER_ID
-    commandBeep();
-  }
-  if (command == backward_command) {  // UPDATED TO USE ROVER_ID
-    commandBackward();
-  }
+  // if (command == test_command) {  // UPDATED TO USE ROVER_ID
+  //   commandTest();
+  // }
+  // if (command == forward_command) {  // UPDATED TO USE ROVER_ID
+  //   commandForward();
+  // }
+  // if (command == right_command) {  // UPDATED TO USE ROVER_ID
+  //   commandRight();
+  // }
+  // if (command == start_command) {  // UPDATED TO USE ROVER_ID
+  //   commandStart();
+  // }
+  // if (command == left_command) {  // UPDATED TO USE ROVER_ID
+  //   commandLeft();
+  // }
+  // if (command == stop_command) {  // UPDATED TO USE ROVER_ID
+  //   commandStop();
+  // }
+  // if (command == beep_command) {  // UPDATED TO USE ROVER_ID
+  //   commandBeep();
+  // }
+  // if (command == backward_command) {  // UPDATED TO USE ROVER_ID
+  //   commandBackward();
+  // }
 
   delay(100);
 }
