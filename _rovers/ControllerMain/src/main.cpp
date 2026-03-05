@@ -13,7 +13,7 @@
 #define DEBUG true
 
 // --- NEW CONSTANT DEFINITION ---
-const char* ROVER_ID = "1"; // Define the constant ID here
+const char* ROVER_ID = "11"; // Define the constant ID here
 
 // Board Libraries:
 // https://adafruit.github.io/arduino-board-index/package_adafruit_index.json

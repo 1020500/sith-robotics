@@ -14,7 +14,7 @@
 const int buzzer = 10;  //buzzer to arduino pin 10
 
 // --- NEW CONSTANT DEFINITION ---
-const char *ROVER_ID = "1";
+const char *ROVER_ID = "11";
 
 #include <Wire.h>
 #include "Adafruit_ADT7410.h"
@@ -59,12 +59,6 @@ void testNewMotors() {
   Serial.println("Forward, forward.");
 }
 
-void testBackLeftOnly() {
-  motorFrontRight->setSpeed(150);
-  motorFrontRight->run(FORWARD);
-  Serial.println("Working!");
-  delay(2000);
-}
 
 void initialiseSerial() {
   Serial.begin(9600);
@@ -212,9 +206,7 @@ void setup() {
 
 
 void loop() {
-  testNewMotors();
-  //testBackLeftOnly();
-  // readGPS();
+  //testNewMotors();
   // transmitData("test");
   //String command = waitForReply();
   //if (DEBUG) {
