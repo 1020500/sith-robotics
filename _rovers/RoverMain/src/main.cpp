@@ -208,44 +208,44 @@ void setup() {
 void loop() {
   //testNewMotors();
   // transmitData("test");
-  //String command = waitForReply();
-  //if (DEBUG) {
-    //Serial.println(command);
-  //}
+  String command = waitForReply();
+  if (DEBUG) {
+    Serial.println(command);
+  }
 
-  // String test_command = String(ROVER_ID) + ",test";
-  // String forward_command = String(ROVER_ID) + ",forward";
-  // String right_command = String(ROVER_ID) + ",right";
-  // String start_command = String(ROVER_ID) + ",start";
-  // String left_command = String(ROVER_ID) + ",left";
-  // String stop_command = String(ROVER_ID) + ",stop";
-  // String beep_command = String(ROVER_ID) + ",beep";
-  // String backward_command = String(ROVER_ID) + ",backward";
+  String test_command = String(ROVER_ID) + ",test";
+  String forward_command = String(ROVER_ID) + ",forward";
+  String right_command = String(ROVER_ID) + ",right";
+  String start_command = String(ROVER_ID) + ",start";
+  String left_command = String(ROVER_ID) + ",left";
+  String stop_command = String(ROVER_ID) + ",stop";
+  String beep_command = String(ROVER_ID) + ",beep";
+  String backward_command = String(ROVER_ID) + ",backward";
 
-  // if (command == test_command) {  // UPDATED TO USE ROVER_ID
-  //   commandTest();
-  // }
-  // if (command == forward_command) {  // UPDATED TO USE ROVER_ID
-  //   commandForward();
-  // }
-  // if (command == right_command) {  // UPDATED TO USE ROVER_ID
-  //   commandRight();
-  // }
-  // if (command == start_command) {  // UPDATED TO USE ROVER_ID
-  //   commandStart();
-  // }
-  // if (command == left_command) {  // UPDATED TO USE ROVER_ID
-  //   commandLeft();
-  // }
-  // if (command == stop_command) {  // UPDATED TO USE ROVER_ID
-  //   commandStop();
-  // }
-  // if (command == beep_command) {  // UPDATED TO USE ROVER_ID
-  //   commandBeep();
-  // }
-  // if (command == backward_command) {  // UPDATED TO USE ROVER_ID
-  //   commandBackward();
-  // }
+  if (command == test_command) {  // UPDATED TO USE ROVER_ID
+    commandTest();
+  }
+  if (command == forward_command) {  // UPDATED TO USE ROVER_ID
+    commandForward();
+  }
+  if (command == right_command) {  // UPDATED TO USE ROVER_ID
+    commandRight();
+  }
+  if (command == start_command) {  // UPDATED TO USE ROVER_ID
+    commandStart();
+  }
+  if (command == left_command) {  // UPDATED TO USE ROVER_ID
+    commandLeft();
+  }
+  if (command == stop_command) {  // UPDATED TO USE ROVER_ID
+    commandStop();
+  }
+  if (command == beep_command) {  // UPDATED TO USE ROVER_ID
+    commandBeep();
+  }
+  if (command == backward_command) {  // UPDATED TO USE ROVER_ID
+    commandBackward();
+  }
 
   delay(100);
 }

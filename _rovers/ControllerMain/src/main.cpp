@@ -59,8 +59,7 @@ void initialiseTFT() {
 // Initialises the Serial Monitor
 // Waits for Serial to be ready before continuing
 void initialiseSerial() {
-  Serial.begin(9600);                  // Start serial at 9600 baud
-  while (!Serial) delay(1);            // Wait for Serial to be ready
+  Serial.begin(9600);                  // Start serial at 9600 baud            // Wait for Serial to be ready
   delay(100);                          // Short delay for stability
   Serial.println("Feather LoRa TX!");  // Print startup message
 }
@@ -105,7 +104,7 @@ void transmitButtonCommands() {
 
   color = ST77XX_BLACK;
   if (!(buttons & TFTWING_BUTTON_LEFT)) {
-    // Serial.println("LEFT");
+    Serial.println("LEFT");
     color = ST77XX_WHITE;
     transmitData("left", ROVER_ID);
   }
@@ -115,7 +114,7 @@ void transmitButtonCommands() {
 
   color = ST77XX_BLACK;
   if (!(buttons & TFTWING_BUTTON_RIGHT)) {
-    // Serial.println("RIGHT");
+    Serial.println("RIGHT");
     color = ST77XX_WHITE;
     transmitData("right", ROVER_ID);
   }
@@ -125,7 +124,7 @@ void transmitButtonCommands() {
 
   color = ST77XX_BLACK;
   if (!(buttons & TFTWING_BUTTON_DOWN)) {
-    // Serial.println("DOWN");
+    Serial.println("DOWN");
     color = ST77XX_WHITE;
     transmitData("backward", ROVER_ID);
   }
@@ -135,7 +134,7 @@ void transmitButtonCommands() {
 
   color = ST77XX_BLACK;
   if (!(buttons & TFTWING_BUTTON_UP)) {
-    // Serial.println("UP");
+    Serial.println("UP");
     color = ST77XX_WHITE;
     transmitData("forward", ROVER_ID);
   }
@@ -145,7 +144,7 @@ void transmitButtonCommands() {
 
   color = ST77XX_BLACK;
   if (!(buttons & TFTWING_BUTTON_A)) {
-    // Serial.println("A");
+    Serial.println("A");
     color = ST7735_GREEN;
     transmitData("beep", ROVER_ID);
   }
@@ -155,7 +154,7 @@ void transmitButtonCommands() {
 
   color = ST77XX_BLACK;
   if (!(buttons & TFTWING_BUTTON_B)) {
-    // Serial.println("B");
+    Serial.println("B");
     color = ST77XX_YELLOW;
   }
 
@@ -164,7 +163,7 @@ void transmitButtonCommands() {
 
   color = ST77XX_BLACK;
   if (!(buttons & TFTWING_BUTTON_SELECT)) {
-    // Serial.println("SELECT");
+    Serial.println("SELECT");
     color = ST77XX_RED;
     transmitData("beepTwice", ROVER_ID);
   }
