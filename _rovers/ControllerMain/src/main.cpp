@@ -212,9 +212,9 @@ void buttonTransmit() {
 // Add/remove menu items here - everything else auto-adjusts
 const char* mainMenuItems[] = {
   "Driving",      // 0
-  "Get Temper",   // 1
+  "Ping ID",   // 1
   "Receive",      // 2
-  "PAgetwo",      // 3
+  "Check ID",      // 3
   "HEEELP",       // 4
   "WOOOAH"        // 5
 };
@@ -230,6 +230,7 @@ void drawMenuItem(int menuIndex, int screenRow, bool isSelected) {
 
 void mainMenuLogic(){
   uint32_t buttons = ss.readButtons();
+  uint16_t color;
   
   // Clear screen once per frame (reduces flicker vs. clearing on every button press)
   
@@ -260,9 +261,9 @@ void mainMenuLogic(){
   // Select option (A button)
   if (!(buttons & TFTWING_BUTTON_A)) {
     switch(selectedOption) {
-      case 0: currentMenu = "driving"; break;
-      case 1: return; break;              // Exit menu
-      case 2: currentMenu = "receiver"; break;
+      case 0: currentMenu = "driving";  tft->fillScreen(ST77XX_BLACK); break;
+      case 1: currentMenu = "pingMenu"; tft->fillScreen(ST77XX_BLACK); break;              // Exit menu
+      case 2: currentMenu = "receiver"; tft->fillScreen(ST77XX_BLACK); break;
       // Add more cases here for options 3, 4, 5, etc.
       // case 3: /* your code */ break;
       // case 4: /* your code */ break;
@@ -271,6 +272,7 @@ void mainMenuLogic(){
     }
   }
 }
+
 
 void receiverMenuLogic(){
   uint32_t buttons = ss.readButtons();
@@ -282,20 +284,35 @@ void receiverMenuLogic(){
   if(reply != "No Reply"){
     tft->fillScreen(ST77XX_BLACK);
     tft->print(reply);
+    tft->println(rf95.lastRssi(), DEC);
   }
   
   if (!(buttons & TFTWING_BUTTON_B)) {
     // Serial.println("B");
+    tft->fillScreen(ST77XX_BLACK);
     currentMenu = "mainMenu";
   }
 }
 
+void pingMenuLogic(){
+  tft->setCursor(0, 0);
+  tft->setTextSize(1);
+  transmitData("Ping Devices", ROVER_ID);
+  delay(10);
+  String reply = waitForReply();
+  if(reply != "No Reply"){
+    tft->print("A Device pinged back!");
+  } else{
+    tft->print("No devices in range");
+  }
+  delay(2000);
+  currentMenu = "mainMenu";
+}
 
 void drawMenu(){
   //Menu logic where code is ran depending on menu, such as running the driving function when driving the rover
   //Each menu would have its own function
   if (currentMenu == "driving"){
-    tft->fillScreen(ST77XX_BLACK);
     buttonTransmit();
   } 
   
@@ -305,6 +322,10 @@ void drawMenu(){
 
   if (currentMenu == "receiver"){
     receiverMenuLogic();
+  }
+
+  if (currentMenu == "pingMenu"){
+    pingMenuLogic();
   }
   //This is the end of the main menu functionality
 }
@@ -350,6 +371,7 @@ void setup() {
 
 // Main loop runs repeatedly after setup
 void loop() {
+  String shortReply;
   unsigned long currentTime = millis();
   unsigned long elapsedTime = currentTime - startTime;
   if (currentMenu == "driving"){
@@ -366,6 +388,11 @@ void loop() {
   // debugTransmissionSimple();  // Send a test message
   // debugTransmissionButton();    // Send message when button is pressed
   // cycleBasicCommands();
+  
+  shortReply = waitForReplyShort();
+  if (shortReply == String(ROVER_ID) + ",Ping Devices"){
+    transmitData("Controller", ROVER_ID);
+  }
   drawMenu();
-  delay(100);
+  delay(90);
 }
