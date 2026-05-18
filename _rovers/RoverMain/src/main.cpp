@@ -19,7 +19,7 @@
 const int buzzer = 10;  //buzzer to arduino pin 10
 
 // --- NEW CONSTANT DEFINITION ---
-const char *ROVER_ID = "1";
+//const char *ROVER_ID = "1"; Redundant
 
 #include <Wire.h>
 #include "Adafruit_ADT7410.h"
@@ -34,7 +34,10 @@ Adafruit_ADT7410 tempsensor = Adafruit_ADT7410();
 
 
 #include "comms.h"
-
+int currentRoverID = 1;
+bool showID = false;
+unsigned long idDisplayStart = 0;
+const int idDisplayDuration = 700;
 // For use with the onboard Neopixel (RGB LED)
 #include <Adafruit_NeoPixel.h>
 Adafruit_NeoPixel pixels(1, PIN_NEOPIXEL, NEO_GRB + NEO_KHZ800);
@@ -95,6 +98,24 @@ void initialiseMotorShield() {
   }
 }
 
+void handleIDDisplay() {
+  if (showID) {
+    // Draw small background (same size vibe as your circles)
+    tft->fillRect(70, 20, 60, 80, ST77XX_BLACK);
+
+    tft->setCursor(80, 32);
+    tft->setTextColor(ST77XX_WHITE);
+    tft->setTextSize(5);
+    tft->print(currentRoverID);
+
+    // Check timeout
+    if (millis() - idDisplayStart > idDisplayDuration) {
+      // Clear it
+      tft->fillRect(120, 5, 20, 15, ST77XX_BLACK);
+      showID = false;
+    }
+  }
+}
 
 void transmitTemperature() {
   float c = tempsensor.readTempC();
@@ -188,6 +209,15 @@ void commandBeep() {
   noTone(buzzer);      // Stop sound...
 }
 
+void buttonTransmit() {
+  uint32_t buttons = ss.readButtons();
+
+  uint16_t color;
+
+  
+  tft->fillCircle(135, 40, 7, color);
+  waitForReply();
+}
 
 void setup() {
   initialiseLoraPins();
