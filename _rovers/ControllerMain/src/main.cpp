@@ -291,7 +291,12 @@ void mainMenuLogic(){
       case 1: currentMenu = "pingMenu"; tft->fillScreen(ST77XX_BLACK); break;              // Exit menu
       case 2: currentMenu = "receiver"; tft->fillScreen(ST77XX_BLACK); break;
       // Add more cases here for options 3, 4, 5, etc.
-      case 3: currentMenu = "checkID"; tft->fillScreen(ST77XX_BLACK); break;
+      case 3: currentMenu = "checkID";
+      tft->fillScreen(ST77XX_BLACK);
+      while (!(ss.readButtons() & TFTWING_BUTTON_A)) {
+        delay(10);
+      }
+      break;
       // case 4: /* your code */ break;
       // case 5: /* your code */ break;
       default: break; // Safety fallback
@@ -345,7 +350,7 @@ void pingMenuLogic(){
 
 void checkIDMenuLogic() {
   uint32_t buttons = ss.readButtons();
-
+  
   if (!(buttons & TFTWING_BUTTON_A)) {
     currentRoverID++;
 
